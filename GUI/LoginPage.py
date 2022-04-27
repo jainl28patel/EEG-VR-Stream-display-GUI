@@ -43,10 +43,10 @@ class Ui_MainWindow(object):
         # Main heading
         ################################################################################################
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(200, 60, 391, 101))
+        self.label_3.setGeometry(QtCore.QRect(200, 20, 420, 140))
         font = QtGui.QFont()
         font.setFamily(".New York")
-        font.setPointSize(25)
+        font.setPointSize(18)
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
@@ -71,10 +71,10 @@ class Ui_MainWindow(object):
         # Log on text
         ################################################################################################
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(350, 280, 101, 41))
+        self.label_5.setGeometry(QtCore.QRect(330, 280, 120, 41))
         self.label_5.setStyleSheet("color : white;")
         font = QtGui.QFont()
-        font.setPointSize(24)
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
@@ -172,7 +172,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_3.setText(_translate("MainWindow", "Human Machine Collaboration Operator Monitoring System"))
+        self.label_3.setText(_translate("MainWindow", "Human Machine Collaboration \nOperator Monitoring System"))
         self.label_5.setText(_translate("MainWindow", "Log on"))
         self.label_6.setText(_translate("MainWindow", "User ID"))
         self.label_7.setText(_translate("MainWindow", "Password"))

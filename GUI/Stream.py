@@ -1,8 +1,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from matplotlib.pyplot import text
 from main import MainWindow
 from PyQt5.QtWidgets import QApplication
 import sys
+
+from pylsl import StreamInfo, StreamInlet, resolve_stream
 
 class Ui_MainWindow2(object):
     def setupUi(self, MainWindow):
@@ -40,9 +43,9 @@ class Ui_MainWindow2(object):
         # welcome message
         ################################################################################################
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(120, 40, 101, 21))
+        self.label_3.setGeometry(QtCore.QRect(120, 40, 150, 20))
         font = QtGui.QFont()
-        font.setPointSize(22)
+        font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
@@ -55,9 +58,9 @@ class Ui_MainWindow2(object):
         # displaying the username
         ################################################################################################
         self.UserName = QtWidgets.QLabel(self.centralwidget)
-        self.UserName.setGeometry(QtCore.QRect(120, 60, 181, 41))
+        self.UserName.setGeometry(QtCore.QRect(120, 60, 250, 41))
         font = QtGui.QFont()
-        font.setPointSize(19)
+        font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
         self.UserName.setFont(font)
@@ -69,9 +72,9 @@ class Ui_MainWindow2(object):
         # Search for stream label
         ################################################################################################
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(270, 160, 291, 61))
+        self.label_5.setGeometry(QtCore.QRect(270, 160, 350, 80))
         font = QtGui.QFont()
-        font.setPointSize(30)
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
@@ -154,12 +157,12 @@ class Ui_MainWindow2(object):
         ################################################################################################
         # Event listner for EEG button
         ################################################################################################
-        self.EEG_button.clicked.connect(self.greensignalEEG)
+        self.EEG_button.clicked.connect(self.eegLSLDetect)
 
         ################################################################################################
         # Event listner for VR button
         ################################################################################################
-        self.VR_button.clicked.connect(self.greensignalVR)
+        self.VR_button.clicked.connect(self.vrLSLDetect)
 
         ################################################################################################
         # Event listner for Next page button
@@ -183,6 +186,38 @@ class Ui_MainWindow2(object):
                                       "border-radius : 10px;")
 
     ################################################################################################
+    # Function to detect lsl stream for EEG stream
+    ################################################################################################
+    textEEG = ""
+    def eegLSLDetect(self):
+        _translate = QtCore.QCoreApplication.translate
+        results = resolve_stream("type", "EEG")
+        if len(results) > 0:
+                inlet = StreamInlet(results[0])
+                info = inlet.info()
+                self.textEEG = "Name: " + info.name() + "\t" + "Channel Count: " + str(info.channel_count()) + "\t" + "Sapmpling Rate: " + str(info.nominal_srate())  
+                self.greensignalEEG()
+        else:
+                self.textEEG = "EEG Not Detected"
+        self.EEG_followup_text.setText((_translate("MainWindow", self.textEEG)))
+        
+    ################################################################################################
+    # Function to detect lsl stream for VR stream
+    ################################################################################################
+    textVR = ""
+    def vrLSLDetect(self):
+        _translate = QtCore.QCoreApplication.translate
+        results = resolve_stream("type", "Stimuli_Trigger")
+        if len(results) > 0:
+                inlet = StreamInlet(results[0])
+                info = inlet.info()
+                self.textVR = "Name: " + info.name()
+                self.greensignalVR()
+        else:
+                self.textVR = "VR Not Detected"
+        self.VR_followup_text.setText((_translate("MainWindow", self.textVR)))
+
+    ################################################################################################
     # Fuction to detect signal for VR stream
     ################################################################################################
     def greensignalVR(self):
@@ -199,8 +234,8 @@ class Ui_MainWindow2(object):
         self.EEG_button.setText(_translate("MainWindow", "Connect to EEG"))
         self.VR_button.setText(_translate("MainWindow", "Connect to VR"))
         self.Next_button.setText(_translate("MainWindow", "Next"))
-        self.EEG_followup_text.setText((_translate("MainWindow", "kdfdsfsadfdsfsdfasdfsadfsdfsdddddfhhihhhshfhkghjhfkhgkjdhjfhgkjjhsdfhgjkdk")))
-        self.VR_followup_text.setText((_translate("MainWindow", "kdfdsfsadfdsfsdfasdfsadfsdfsdddddfhhihhhshfhkghjhfkhgkjdhjfhgkjjhsdfhgjfkdk")))
+        self.EEG_followup_text.setText((_translate("MainWindow", self.textEEG)))
+        self.VR_followup_text.setText((_translate("MainWindow", self.textVR)))
 
 
 if __name__ == "__main__":

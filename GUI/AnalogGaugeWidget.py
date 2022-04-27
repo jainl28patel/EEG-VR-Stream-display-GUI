@@ -81,7 +81,7 @@ class AnalogGaugeWidget(QWidget):
         # DEFAULT MINIMUM AND MAXIMUM VALUE
         ################################################################################################
         self.minValue = 0
-        self.maxValue = 1000
+        self.maxValue = 100
         ################################################################################################
         # DEFAULT START VALUE
         ################################################################################################
@@ -191,12 +191,12 @@ class AnalogGaugeWidget(QWidget):
         ################################################################################################
         # ENABLE NEEDLE MOUSE TRACKING BY DEFAULT
         ################################################################################################
-        self.setMouseTracking(True)
+        self.setMouseTracking(False)
 
         ################################################################################################
         # SET GAUGE UNITS
         ################################################################################################
-        self.units = "℃"
+        self.units = ""
 
         # QTimer sorgt für neu Darstellung alle X ms
         # evtl performance hier verbessern mit self.update() und self.use_timer_event = False
@@ -205,7 +205,7 @@ class AnalogGaugeWidget(QWidget):
         if self.use_timer_event:
             timer = QTimer(self)
             timer.timeout.connect(self.update)
-            timer.start(10)
+            timer.start(1)
         else:
             self.update()
 
